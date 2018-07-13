@@ -1,6 +1,5 @@
 # YFAPIKit
 
-[![CI Status](https://img.shields.io/travis/Fynil/YFAPIKit.svg?style=flat)](https://travis-ci.org/Fynil/YFAPIKit)
 [![Version](https://img.shields.io/cocoapods/v/YFAPIKit.svg?style=flat)](https://cocoapods.org/pods/YFAPIKit)
 [![License](https://img.shields.io/cocoapods/l/YFAPIKit.svg?style=flat)](https://cocoapods.org/pods/YFAPIKit)
 [![Platform](https://img.shields.io/cocoapods/p/YFAPIKit.svg?style=flat)](https://cocoapods.org/pods/YFAPIKit)
@@ -22,7 +21,7 @@ pod 'YFAPIKit'
 
 ## Author
 
-Fynil, Fynil@icloud.com
+Fynil, fynil@qq.com
 
 ## License
 
