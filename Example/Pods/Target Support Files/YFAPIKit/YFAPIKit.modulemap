@@ -1,0 +1,6 @@
+framework module YFAPIKit {
+  umbrella header "YFAPIKit-umbrella.h"
+
+  export *
+  module * { export * }
+}

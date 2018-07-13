@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'YFAPIKit_Example' do
+  pod 'YFAPIKit', :path => '../'
+
+  target 'YFAPIKit_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

@@ -1,0 +1,23 @@
+PODS:
+  - SVProgressHUD (2.2.5)
+  - YFAPIKit (1.0.0):
+    - SVProgressHUD
+
+DEPENDENCIES:
+  - YFAPIKit (from `../`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - SVProgressHUD
+
+EXTERNAL SOURCES:
+  YFAPIKit:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  YFAPIKit: ee1d869be39f7f52e6c0f117a8c61fef3296f320
+
+PODFILE CHECKSUM: e1698ee725ccc56adf1ed7797b13820d82487912
+
+COCOAPODS: 1.5.2
