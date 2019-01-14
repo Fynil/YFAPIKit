@@ -8,7 +8,7 @@
 
 #import "YFAPIBaseVC.h"
 
-static NSString *testAddressKey = @"llTestServerAddress";
+static NSString *testAddressKey = @"com.lianlianpay.testAddress";
 
 typedef NS_ENUM(NSUInteger, EnvironmentType) {
     EnvironmentTypeDefault,
@@ -22,6 +22,7 @@ typedef NS_ENUM(NSUInteger, EnvironmentType) {
 + (BOOL)isDebug;
 @property (nonatomic, strong) NSString *sdkAbout;
 @property (nonatomic, strong) NSString *testAddress;
+@property (nonatomic, strong) NSString *uatAddress;
 @property (nonatomic, strong) NSString *sdkVersion;
 @property (nonatomic, assign) EnvironmentType envType;
 

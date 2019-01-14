@@ -75,7 +75,7 @@
 }
 
 - (void)downloadNewDemo {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"YFCheckUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"com.lianlianpay.checkUpdate" object:nil];
 }
 
 - (void)jumpToSafari {

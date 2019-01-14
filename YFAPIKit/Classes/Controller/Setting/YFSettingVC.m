@@ -11,9 +11,6 @@
 
 static YFSettingVC *setting;
 
-static NSString *const kEnvironmentKey = @"EnvironmentKey";
-static NSString *const kEnvAddressKey = @"llTestServerAddress";
-
 @interface YFSettingVC () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, strong) UITableView *settingTb;
@@ -72,9 +69,22 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
     //地址
     if (indexPath.section == 1) {
         cell.textLabel.text = @"地址";
-        NSString *address = self.testAddress;
-        cell.detailTextLabel.text = address.length > 0 ? address : @"请配置测试环境地址";
+        cell.detailTextLabel.numberOfLines = 2;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        switch (self.envType) {
+            case EnvironmentTypeDefault:
+                cell.detailTextLabel.text = @"正式环境无法自定义地址";
+                cell.accessoryType = UITableViewCellAccessoryNone;
+                break;
+            case EnvironmentTypeTest:
+                cell.detailTextLabel.text = self.testAddress.length > 0 ? self.testAddress : @"请配置测试环境地址";
+                break;
+            case EnvironmentTypeUAT:
+                cell.detailTextLabel.text = self.uatAddress.length > 0 ? self.uatAddress : @"请配置UAT环境地址";
+                break;
+            default:
+                break;
+        }
     }
     
     //配置
@@ -113,17 +123,17 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
     //切换环境
     if (indexPath.section == 0) {
         self.envType = indexPath.row;
-        [tableView reloadSections:[NSIndexSet indexSetWithIndex:0] withRowAnimation:UITableViewRowAnimationNone];
+        [tableView reloadData];
     }
     //测试环境地址
-    if (indexPath.section ==1 && self.envType == EnvironmentTypeTest) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"测试环境地址" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    if (indexPath.section ==1 && !(self.envType == EnvironmentTypeDefault)) {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"自定义地址" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             textField.text = self.testAddress;
             textField.textAlignment = NSTextAlignmentCenter;
             textField.accessibilityIdentifier = @"testAddrField";
             textField.borderStyle = UITextBorderStyleRoundedRect;
-            textField.placeholder = @"请输入测试环境地址";
+            textField.placeholder = @"请输入自定义地址";
             textField.borderStyle = UITextBorderStyleNone;
             textField.keyboardType = UIKeyboardTypeURL;
             textField.textAlignment = NSTextAlignmentCenter;
@@ -131,7 +141,8 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
         }];
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             UITextField *field = alert.textFields.firstObject;
-            [[NSUserDefaults standardUserDefaults] setValue:field.text forKey:kEnvAddressKey];
+            
+            [[NSUserDefaults standardUserDefaults] setValue:field.text forKey:@"com.lianlianpay.address.test"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
@@ -142,7 +153,7 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
     if (indexPath.section == (2 + [self add])) {
         //检查更新
         if (indexPath.row == 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"YFCheckUpdate" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"com.lianlianpay.checkUpdate" object:nil];
         }
         //关于SDK
         if (indexPath.row == 1) {
@@ -160,7 +171,7 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
         return @"环境";
     }
     if (section ==1) {
-        return @"测试环境地址，仅对测试环境有效";
+        return @"自定义环境地址";
     }
     if (section == 2 && self.configArr.count > 0) {
         return @"配置";
@@ -217,15 +228,15 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
 }
 
 + (EnvironmentType)environment {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:kEnvironmentKey];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"com.lianlianpay.environment"];
 }
 
 - (NSString *)testAddress {
-    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:kEnvAddressKey];
+    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.lianlianpay.address.test"];
     if (savedAddr.length > 0) {
         return savedAddr;
     }
-    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:kEnvAddressKey];
+    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:@"com.lianlianpay.address.test"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     return _testAddress;
 }
@@ -239,7 +250,7 @@ static NSString *const kEnvAddressKey = @"llTestServerAddress";
 
 - (void)setEnvType:(EnvironmentType)envType {
     _envType = envType;
-    [[NSUserDefaults standardUserDefaults] setInteger:envType forKey:kEnvironmentKey];
+    [[NSUserDefaults standardUserDefaults] setInteger:envType forKey:@"com.lianlianpay.environment"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

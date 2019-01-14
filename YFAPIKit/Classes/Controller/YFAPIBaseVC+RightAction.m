@@ -14,8 +14,8 @@
 @implementation YFAPIBaseVC (RightAction)
 
 - (void)requestTokenWithDic:(NSDictionary *)paramDic path:(NSString *)path complete:(void (^)(NSDictionary *))complete {
-    
-    DemoLog(@"\n👉👉👉👉👉👉👉👉👉👉 \n\n 请求地址:\n %@\n\n 请求报文: \n%@",path, paramDic.prettyString);
+    DemoLog(@"\n👉👉👉👉👉👉👉👉👉👉 \n");
+    DemoLog(@"\n 请求地址:\n %@\n\n 请求报文: \n%@",path, paramDic.prettyString);
     __block NSDictionary *jsonObject = nil;
     
     NSURL *url = [NSURL URLWithString:path];
@@ -56,7 +56,8 @@
             return;
         }
         jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        DemoLog(@"\n👈👈👈👈👈👈👈👈👈👈 返回报文:\n %@",jsonObject.prettyString);
+        DemoLog(@"\n👈👈👈👈👈👈👈👈👈👈");
+        DemoLog(@"返回报文:\n %@",jsonObject.prettyString);
         DemoLog(@"\nret_msg = %@",jsonObject[@"ret_msg"]);
         dispatch_async(dispatch_get_main_queue(), ^{
             complete(jsonObject);

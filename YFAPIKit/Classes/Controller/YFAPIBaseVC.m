@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUpdate) name:@"YFCheckUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUpdate) name:@"com.lianlianpay.checkUpdate" object:nil];
     self.showHud = YES;
     [self hudConfig];
     [self uiStyleConfiguration];
@@ -37,6 +37,7 @@
 
 - (void)hudConfig {
     [SVProgressHUD setMaximumDismissTimeInterval:1];
+    [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     [SVProgressHUD setDefaultMaskType:SVProgressHUDMaskTypeBlack];
 }
 
@@ -138,16 +139,42 @@
     }
 }
 
-- (NSString *)keyForMerchant: (NSString *)merchant isRSA: (BOOL)isRSA {
-    NSString *merchantID = merchant;
-    NSString *sign_type = isRSA?@"RSA":@"MD5";
+- (NSString *)inputedKey {
+    NSString *inputedKey = [self.tableView field:@"merchantKey"].text;
+    if (inputedKey.length > 0) {
+        return [self validKey:inputedKey];
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)keyForMerchant {
+    if ([self inputedKey]) return [self inputedKey];
     
+    NSString *merchantID = [self.tableView textForKeys:@[@"oid_partner",@"oid_plat"]];
+    NSString *sign_type = [self.tableView field:@"sign_type"].text;
+    BOOL isUsingRSA = [sign_type rangeOfString:@"RSA"].length != 0;
+    NSString *plistKey = [self keyForMerchant:merchantID isRSA:isUsingRSA];
+    if (plistKey.length > 0) {
+        return plistKey;
+    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [SVProgressHUD showInfoWithStatus:@"无对应密钥"];
+    });
+    return nil;
+}
+
+- (NSString *)keyForMerchant: (NSString *)merchant isRSA: (BOOL)isRSA {
+    
+    if ([self inputedKey]) return [self inputedKey];
+    
+    NSString *merchantID = merchant;
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Merchants" ofType:@"plist"];
     NSArray *merchants = [NSArray arrayWithContentsOfFile:plistPath];
     NSString *md5Key = @"yintong1234567890";
     for (NSDictionary *merchant in merchants) {
         if ([merchant[@"merchantNo"] isEqualToString:merchantID]) {
-            if ([sign_type isEqualToString:@"RSA"]) {
+            if (isRSA) {
                 NSString *rsaKey = [merchant valueForKey:@"rsaPrivateKey"];
                 return [self validKey:rsaKey];
             }
@@ -158,31 +185,6 @@
     return nil;
 }
 
-- (NSString *)keyForMerchant {
-    NSString *merchantID = [self.tableView textForKeys:@[@"oid_partner",@"oid_plat"]];
-    NSString *sign_type = [self.tableView field:@"sign_type"].text;
-    NSString *inputedKey = [self.tableView field:@"merchantKey"].text;
-    if (inputedKey.length > 0) {
-        return [self validKey:inputedKey];
-    }
-    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Merchants" ofType:@"plist"];
-    NSArray *merchants = [NSArray arrayWithContentsOfFile:plistPath];
-    NSString *md5Key = @"yintong1234567890";
-    for (NSDictionary *merchant in merchants) {
-        if ([merchant[@"merchantNo"] isEqualToString:merchantID]) {
-            if ([sign_type isEqualToString:@"RSA"]) {
-                NSString *rsaKey = [merchant valueForKey:@"rsaPrivateKey"];
-                return [self validKey:rsaKey];
-            }
-            md5Key = [merchant valueForKey:@"md5Key"];
-            return [self validKey:md5Key];
-        }
-    }
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [SVProgressHUD showInfoWithStatus:@"无对应密钥"];
-    });
-    return nil;
-}
 
 - (NSString *)validKey: (NSString *)key {
     return [[key componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@""];
