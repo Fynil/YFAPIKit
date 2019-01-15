@@ -240,9 +240,9 @@ static YFSettingVC *setting;
     if (savedAddr.length > 0) {
         return savedAddr;
     }
-    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:@"com.lianlianpay.address.uat"];
+    [[NSUserDefaults standardUserDefaults] setValue:_uatAddress forKey:@"com.lianlianpay.address.uat"];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    return _testAddress;
+    return _uatAddress;
 }
 
 - (NSString *)testAddress {
