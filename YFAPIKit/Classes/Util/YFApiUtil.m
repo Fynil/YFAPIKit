@@ -203,14 +203,33 @@ static YFApiUtil *util;
 }
 
 - (NSString *)sortString: (NSString *)unSortedString {
-    unSortedString = [[unSortedString stringByReplacingOccurrencesOfString:@"{" withString:@""] stringByReplacingOccurrencesOfString:@"}" withString:@""];
-    NSArray* arr = [unSortedString componentsSeparatedByString:@","];
-    NSArray* sortedArray = [arr sortedArrayUsingComparator:^NSComparisonResult(id _Nonnull obj1, id _Nonnull obj2) {
-        return [obj1 compare:obj2];
-    }];
-    NSString* combinedString = [sortedArray componentsJoinedByString:@","];
-    NSString* finalString = [NSString stringWithFormat:@"{%@}", combinedString];
-    return finalString;
+    if (![NSJSONSerialization isValidJSONObject:self]) {
+        return nil;
+    }
+#if __IPHONE_OS_VERSION_MAX_ALLOWED > __IPHONE_10_3
+    if (@available(iOS 11.0,*)) {
+        NSError *err = nil;
+        NSData *strData = [NSJSONSerialization dataWithJSONObject:self options:NSJSONWritingSortedKeys error:&err];
+        NSString *sortedString = [[NSString alloc] initWithData:strData encoding:NSUTF8StringEncoding];
+        return sortedString;
+    }
+#endif
+    NSMutableArray *sortedKeys = [NSMutableArray arrayWithArray:[self allKeys]];
+    [sortedKeys sortUsingSelector:@selector(caseInsensitiveCompare:)];
+    NSMutableString *jsonString = [[NSMutableString alloc] init];
+    [jsonString appendString:@"{"];
+    for (NSString *key in sortedKeys) {
+        [jsonString appendFormat:@"\"%@\"", key];
+        [jsonString appendString:@":"];
+        [jsonString appendFormat:@"\"%@\"", [self objectForKey:key]];
+        [jsonString appendString:@","];
+    }
+    if ([jsonString length] > 2) {
+        [jsonString deleteCharactersInRange:NSMakeRange([jsonString length] - 1, 1)];
+    }
+    [jsonString appendString:@"}"];
+    
+    return jsonString;
 }
 
 @end

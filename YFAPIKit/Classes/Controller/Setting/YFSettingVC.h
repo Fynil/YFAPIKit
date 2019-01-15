@@ -4,11 +4,11 @@
 //
 //  Created by Fynil on 2018/3/15.
 //  Copyright © 2018年 Fynil. All rights reserved.
-//
+//  测试环境地址缓存KEY：com.lianlianpay.address.test
+//  UAT环境地址缓存KEY: com.lianlianpay.address.uat
+//  环境切换缓存KEY: com.lianlianpay.environment
 
 #import "YFAPIBaseVC.h"
-
-static NSString *testAddressKey = @"com.lianlianpay.testAddress";
 
 typedef NS_ENUM(NSUInteger, EnvironmentType) {
     EnvironmentTypeDefault,

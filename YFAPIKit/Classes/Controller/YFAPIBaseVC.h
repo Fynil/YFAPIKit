@@ -28,6 +28,8 @@ typedef void (^ExitParam)(NSDictionary* exitParam);
 @property (nonatomic, assign) BOOL showHud;
 @property (nonatomic, strong) NSString *merchantTest;
 @property (nonatomic, strong) NSString *merchantRelease;
+///与时间相关的输入框
+@property (nonatomic, strong) NSArray *timeRelatedFields;
 
 #pragma mark - UI
 

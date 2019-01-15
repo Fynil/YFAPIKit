@@ -34,13 +34,13 @@
         self.detail = interface.headDetail;
         self.downloadUrl = interface.downloadUrl;
         NSMutableArray *arr = @[].mutableCopy;
-        NSDictionary *necessaryArr = [self sectionDicWithHeader:@"Necessary" footer:nil andFields:interface.necessaryKeys isNecessary:YES];
-        if (interface.necessaryKeys.count > 0) {
-            [arr addObject:necessaryArr];
-        }
         NSDictionary *optionalArr = [self sectionDicWithHeader:@"Optional" footer:nil andFields:interface.optionalKeys isNecessary:NO];
         if (interface.optionalKeys.count > 0) {
             [arr addObject:optionalArr];
+        }
+        NSDictionary *necessaryArr = [self sectionDicWithHeader:@"Necessary" footer:nil andFields:interface.necessaryKeys isNecessary:YES];
+        if (interface.necessaryKeys.count > 0) {
+            [arr addObject:necessaryArr];
         }
         NSDictionary *sdkParamArr = [self sectionDicWithHeader:@"SDKParams" footer:@"SDKParams为创单后请求SDK的参数,请先获取Token" andFields:interface.sdkParams isNecessary:YES];
         if (interface.sdkParams.count > 0) {

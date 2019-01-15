@@ -24,7 +24,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(checkUpdate) name:@"com.lianlianpay.checkUpdate" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(checkUpdate)
+                                                 name:@"com.lianlianpay.checkUpdate"
+                                               object:nil];
     self.showHud = YES;
     [self hudConfig];
     [self uiStyleConfiguration];
@@ -32,7 +35,6 @@
 }
 
 - (void)checkUpdate {
-    
 }
 
 - (void)hudConfig {
@@ -42,19 +44,19 @@
 }
 
 
-- (void)viewWillAppear:(BOOL)animated
-{
+- (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self choooseEnvironmentMappedMerchant];
 }
 
 - (void)choooseEnvironmentMappedMerchant {
-    YFTextField *field = [self.tableView field:@"oid_partner"]?:[self.tableView field:@"oid_plat"];
+    YFTextField *field = [self.tableView field:@"oid_partner"] ?: [self.tableView field:@"oid_plat"];
     NSString *text = field.text;
     NSArray *arr = field.model.text;
     for (NSDictionary *dic in arr) {
         if ([dic[@"field"] isEqualToString:text]) {
-            field.text = [YFSettingVC environment]==EnvironmentTypeTest?self.merchantTest?:field.text:self.merchantRelease?:field.text;
+            field.text =
+                [YFSettingVC environment] == EnvironmentTypeTest ? self.merchantTest ?: field.text : self.merchantRelease ?: field.text;
         }
     }
 }
@@ -62,7 +64,6 @@
 #pragma mark - private
 
 - (void)uiStyleConfiguration {
-    
 }
 
 - (void)configMerchantForTest:(NSString *)testMerchantNo andRelease:(NSString *)releaseMerchantNo {
@@ -72,16 +73,16 @@
     }
     NSMutableArray *arr = @[].mutableCopy;
     if (releaseMerchantNo.length > 0) {
-        [arr addObject:@{@"field":releaseMerchantNo,@"picker":@"正式商户号"}];
+        [arr addObject:@{ @"field" : releaseMerchantNo, @"picker" : @"正式商户号" }];
     }
     if (testMerchantNo.length > 0) {
-        [arr addObject:@{@"field":testMerchantNo,@"picker":@"测试商户号"}];
+        [arr addObject:@{ @"field" : testMerchantNo, @"picker" : @"测试商户号" }];
     }
-    
-    [arr addObject:@{@"field":@"",@"picker":@"自定义"}];
-    merchantField.model.text =  arr.copy;
+
+    [arr addObject:@{ @"field" : @"", @"picker" : @"自定义" }];
+    merchantField.model.text = arr.copy;
     if (!(merchantField.text.length > 0)) {
-        merchantField.text = [YFSettingVC environment]==EnvironmentTypeTest?testMerchantNo?:@"":releaseMerchantNo?:@"";
+        merchantField.text = [YFSettingVC environment] == EnvironmentTypeTest ? testMerchantNo ?: @"" : releaseMerchantNo ?: @"";
     }
 }
 
@@ -90,9 +91,9 @@
     [self.navigationController.navigationBar setShadowImage:[[UIImage alloc] init]];
     self.view.backgroundColor = YFColor;
     self.navigationController.navigationBar.barTintColor = YFColor;
-    [self.navigationController.navigationBar setTintColor:[YFColor isEqual:[UIColor whiteColor]]?kYFNavTextColor:[UIColor whiteColor]];
+    [self.navigationController.navigationBar setTintColor:[YFColor isEqual:[UIColor whiteColor]] ? kYFNavTextColor : [UIColor whiteColor]];
     self.navigationController.navigationBar.translucent = NO;
-    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:kYFNavTextColor}];
+    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName : kYFNavTextColor}];
 
     if (self == self.navigationController.viewControllers.firstObject) {
         UIBarButtonItem *rightBBI = [YFApiUtil llBBIWithTitle:@"设置" andTarget:self action:@selector(configEnv)];
@@ -111,13 +112,13 @@
     [self.tableView endEditing:YES];
 }
 
-- (void)userInterfaceWithPlist: (NSString *)plist {
+- (void)userInterfaceWithPlist:(NSString *)plist {
     [self.tableView configWithPlist:plist];
     [self.view addSubview:self.tableView];
     [self refreshTimeAndUser];
 }
 
-- (void)userInterfaceWithModel: (YFUIModel *)model {
+- (void)userInterfaceWithModel:(YFUIModel *)model {
     self.tableView.uiModel = model;
     [self.tableView configWithModel];
     [self.view addSubview:self.tableView];
@@ -134,7 +135,7 @@
     YFTextField *userIDField = [self.tableView field:@"user_id"];
     if (userIDField.text.length == 0) {
         NSString *order = [YFApiUtil generateOrderNO];
-        order = [order substringFromIndex:order.length-4];
+        order = [order substringFromIndex:order.length - 4];
         userIDField.text = [@"User" stringByAppendingString:order];
     }
 }
@@ -150,8 +151,8 @@
 
 - (NSString *)keyForMerchant {
     if ([self inputedKey]) return [self inputedKey];
-    
-    NSString *merchantID = [self.tableView textForKeys:@[@"oid_partner",@"oid_plat"]];
+
+    NSString *merchantID = [self.tableView textForKeys:@[ @"oid_partner", @"oid_plat" ]];
     NSString *sign_type = [self.tableView field:@"sign_type"].text;
     BOOL isUsingRSA = [sign_type rangeOfString:@"RSA"].length != 0;
     NSString *plistKey = [self keyForMerchant:merchantID isRSA:isUsingRSA];
@@ -164,10 +165,10 @@
     return nil;
 }
 
-- (NSString *)keyForMerchant: (NSString *)merchant isRSA: (BOOL)isRSA {
-    
+- (NSString *)keyForMerchant:(NSString *)merchant isRSA:(BOOL)isRSA {
+
     if ([self inputedKey]) return [self inputedKey];
-    
+
     NSString *merchantID = merchant;
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"Merchants" ofType:@"plist"];
     NSArray *merchants = [NSArray arrayWithContentsOfFile:plistPath];
@@ -186,18 +187,22 @@
 }
 
 
-- (NSString *)validKey: (NSString *)key {
+- (NSString *)validKey:(NSString *)key {
     return [[key componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]] componentsJoinedByString:@""];
 }
 
-- (void)pushInfoVCWithTitle: (NSString *)title andDic: (NSDictionary *)dic {
+- (void)pushInfoVCWithTitle:(NSString *)title andDic:(NSDictionary *)dic {
     NSString *retCode = dic[@"ret_code"];
     BOOL success = [retCode isEqualToString:@"0000"] || [retCode isEqualToString:@"LE0000"];
     NSString *retMsg = dic[@"ret_msg"];
-    [self pushInfoVC:title success:success text:retMsg?:title detail:nil info:dic];
+    [self pushInfoVC:title success:success text:retMsg ?: title detail:nil info:dic];
 }
 
-- (void)pushInfoVC: (NSString *)title success: (BOOL)success text: (NSString *)text detail: (NSString *)detail info: (NSDictionary *)info {
+- (void)pushInfoVC:(NSString *)title
+           success:(BOOL)success
+              text:(NSString *)text
+            detail:(NSString *)detail
+              info:(NSDictionary *)info {
     YFResultInfoVC *resultVC = [[YFResultInfoVC alloc] initWithInfoDic:info];
     resultVC.title = title;
     resultVC.text = text;
@@ -207,9 +212,10 @@
     [self.navigationController pushViewController:resultVC animated:YES];
 }
 
-- (void)yfAlertWithTitle: (NSString *)title andMsg:(NSString *)msg {
+- (void)yfAlertWithTitle:(NSString *)title andMsg:(NSString *)msg {
     if ([UIDevice currentDevice].systemVersion.floatValue > 7.8) {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertController *alert =
+            [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
         [alert addAction:[UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:nil]];
         [self presentViewController:alert animated:YES completion:nil];
     } else {
@@ -217,7 +223,7 @@
     }
 }
 
-- (void)alertWithMsg: (NSString *)msg {
+- (void)alertWithMsg:(NSString *)msg {
     [self yfAlertWithTitle:@"提示" andMsg:msg];
 }
 
@@ -235,7 +241,7 @@
 
 - (YFTableView *)tableView {
     if (!_tableView) {
-        _tableView = [[YFTableView alloc] initWithFrame:CGRectMake(0, 0, kWindowW, kWindowH-64)];
+        _tableView = [[YFTableView alloc] initWithFrame:CGRectMake(0, 0, kWindowW, kWindowH - 64)];
         __weak typeof(self) wSelf = self;
         _tableView.headerShow = ^{
             wSelf.title = @"";

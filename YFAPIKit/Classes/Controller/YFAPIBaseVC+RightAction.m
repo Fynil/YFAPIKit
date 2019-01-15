@@ -7,29 +7,28 @@
 //
 
 #import "YFAPIBaseVC+RightAction.h"
-#import "YFRiskItemVC.h"
-#import "YFSharingDataListVC.h"
 #import "YFIDCardGenerator.h"
+#import "YFDicJsonStringVC.h"
 
 @implementation YFAPIBaseVC (RightAction)
 
 - (void)requestTokenWithDic:(NSDictionary *)paramDic path:(NSString *)path complete:(void (^)(NSDictionary *))complete {
     DemoLog(@"\n👉👉👉👉👉👉👉👉👉👉 \n");
-    DemoLog(@"\n 请求地址:\n %@\n\n 请求报文: \n%@",path, paramDic.prettyString);
+    DemoLog(@"\n 请求地址:\n %@\n\n 请求报文: \n%@", path, paramDic.prettyString);
     __block NSDictionary *jsonObject = nil;
-    
+
     NSURL *url = [NSURL URLWithString:path];
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     request.HTTPMethod = @"POST";
-    
+
     NSString *param = paramDic.yfJsonString;
-    
+
     request.HTTPBody = [param dataUsingEncoding:NSUTF8StringEncoding];
     request.timeoutInterval = 40;
-    
-    [request setValue: @"application/json" forHTTPHeaderField:@"Content-Type"];
+
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-    
+
     NSURLSession *session = [NSURLSession sharedSession];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.showHud) {
@@ -38,31 +37,32 @@
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
         }
     });
-    
+
     NSURLSessionDataTask *task =
-    [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (self.showHud) {
-                [SVProgressHUD dismiss];
-            }else {
-                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
-            }
-        });
-        if (error || !data) {
-            DemoLog(@"请求出错：%@",error.description);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                complete(@{@"ret_code":@"LE9001",@"ret_msg":error.localizedDescription});
-            });
-            return;
-        }
-        jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
-        DemoLog(@"\n👈👈👈👈👈👈👈👈👈👈");
-        DemoLog(@"返回报文:\n %@",jsonObject.prettyString);
-        DemoLog(@"\nret_msg = %@",jsonObject[@"ret_msg"]);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            complete(jsonObject);
-        });
-    }];
+        [session dataTaskWithRequest:request
+                   completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           if (self.showHud) {
+                               [SVProgressHUD dismiss];
+                           } else {
+                               [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+                           }
+                       });
+                       if (error || !data) {
+                           DemoLog(@"请求出错：%@", error.description);
+                           dispatch_async(dispatch_get_main_queue(), ^{
+                               complete(@{ @"ret_code" : @"LE9001", @"ret_msg" : error.localizedDescription });
+                           });
+                           return;
+                       }
+                       jsonObject = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingAllowFragments error:nil];
+                       DemoLog(@"\n👈👈👈👈👈👈👈👈👈👈");
+                       DemoLog(@"返回报文:\n %@", jsonObject.prettyString);
+                       DemoLog(@"\nret_msg = %@", jsonObject[@"ret_msg"]);
+                       dispatch_async(dispatch_get_main_queue(), ^{
+                           complete(jsonObject);
+                       });
+                   }];
     [task resume];
 }
 
@@ -75,7 +75,10 @@
 }
 
 - (void)refreshTimeRelatedTexts {
-    NSArray *arr = @[@"timestamp",@"time_stamp",@"dt_order",@"no_order",@"request_time"];
+    NSArray *arr = @[ @"timestamp", @"time_stamp", @"dt_order", @"no_order", @"request_time" ];
+    if (self.timeRelatedFields) {
+        arr = [arr arrayByAddingObjectsFromArray:self.timeRelatedFields];
+    }
     NSString *time = [YFApiUtil timeStamp];
     for (NSString *key in arr) {
         YFTextField *field = [self.tableView field:key];
@@ -90,27 +93,56 @@
 }
 
 - (void)requestToken {
-    
 }
 
 - (void)generateIDCard {
     NSString *idcard = [YFIDCardGenerator generateIDCard];
     [self.tableView field:@"id_no"].text = idcard;
+    if ([self.tableView field:@"user_info_id_no"]) {
+        [self.tableView field:@"user_info_id_no"].text = idcard;
+    }
 }
 
 - (void)configRiskItem {
-    YFRiskItemVC *riskItemVC = [YFRiskItemVC new];
-    YFTextField *field = [self.tableView field:@"risk_item"];
-    riskItemVC.riskItem = ^(NSString *riskItem) {
-        field.text = riskItem;
+    YFDicJsonStringVC *vc = [[YFDicJsonStringVC alloc] init];
+    vc.interface =
+        [[YFInterface alloc] initWithName:@"com.lianlianpay.riskitem"
+                                headTitle:@"风控参数配置"
+                               headDetail:nil
+                            necessaryKeys:@[]
+                             optionalKeys:@[
+                                 @"user_info_mercht_userno", @"user_info_dt_register", @"user_info_full_name", @"user_info_id_no", @"user_info_identify_type", @"user_info_identify_state", @"frms_ip_addr"
+                             ]
+                                sdkParams:nil];
+    __weak typeof(self) weakSelf = self;
+    vc.exitParam = ^(NSDictionary *exitParam) {
+        YFTextField *field = [weakSelf.tableView field:@"risk_item"];
+        field.text = exitParam.yfJsonString;
     };
-    [self.navigationController pushViewController:riskItemVC animated:YES];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)configShareingData {
-    YFSharingDataListVC *sharingDataVC = [YFSharingDataListVC new];
+    YFDicJsonStringVC *sharingDataVC = [[YFDicJsonStringVC alloc] init];
+    NSArray *sharingDataArr = @[@"oid_partner",@"busi_partner",@"money_order",@"sharingDataInfo"];
+    sharingDataVC.interface = [[YFInterface alloc] initWithName:@"LLSharingData" headTitle:@"分账说明" headDetail:@"shareing_data" necessaryKeys:sharingDataArr optionalKeys:nil sdkParams:nil];
+    __weak typeof(self) weakSelf = self;
     sharingDataVC.exitParam = ^(NSDictionary *exitParam) {
-        [self.tableView field:@"shareing_data"].text = exitParam[@"shareing_data"];
+        YFTextField *field = [weakSelf.tableView field:@"shareing_data"];
+        NSString *inputedSD = @"";
+        if (exitParam && exitParam.allKeys.count == sharingDataArr.count) {
+            NSMutableArray *mArr = @[].mutableCopy;
+            for (NSString *key in sharingDataArr) {
+                [mArr addObject:[exitParam valueForKey:key]];
+            }
+            inputedSD = [mArr.copy componentsJoinedByString:@"^"];
+            if (field.text.length > 0) {
+                field.text = [@[field.text,inputedSD] componentsJoinedByString:@"|"];
+            } else {
+                field.text = inputedSD;
+            }
+        }
+        
     };
     [self.navigationController pushViewController:sharingDataVC animated:YES];
 }
@@ -130,7 +162,7 @@
         NSLog(@"定位服务没有开启！请设置打开！");
         return;
     }
-    
+
     if ([CLLocationManager authorizationStatus] == kCLAuthorizationStatusNotDetermined) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self.locationMgr requestWhenInUseAuthorization];
@@ -141,11 +173,10 @@
     [self.locationMgr startUpdatingLocation];
 }
 
-- (void)locationManager:(CLLocationManager *)manager
-     didUpdateLocations:(NSArray<CLLocation *> *)locations {
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
     CLLocation *location = [locations firstObject];
-    CLLocationCoordinate2D coordinate = location.coordinate;   //经纬度
-    [self.tableView field:@"device_location"].text = [NSString stringWithFormat:@"%.3f+%.3f",coordinate.longitude,coordinate.latitude];
+    CLLocationCoordinate2D coordinate = location.coordinate;//经纬度
+    [self.tableView field:@"device_location"].text = [NSString stringWithFormat:@"%.3f+%.3f", coordinate.longitude, coordinate.latitude];
     [manager stopUpdatingLocation];
 }
 

@@ -26,8 +26,10 @@
 				<string>sign_type</string>
 				<string>no_order</string>
 				<string>dt_order</string>
+				<string>shareing_data</string>
 				<string>bank_code</string>
 				<string>name</string>
+				<string>risk_item</string>
 				<string>id_no</string>
 				<string>card_no</string>
 				<string>bind_mob</string>

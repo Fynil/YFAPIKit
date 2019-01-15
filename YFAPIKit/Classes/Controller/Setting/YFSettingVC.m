@@ -73,7 +73,7 @@ static YFSettingVC *setting;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         switch (self.envType) {
             case EnvironmentTypeDefault:
-                cell.detailTextLabel.text = @"正式环境无法自定义地址";
+                cell.detailTextLabel.text = @"正式环境不支持自定义";
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 break;
             case EnvironmentTypeTest:
@@ -130,6 +130,7 @@ static YFSettingVC *setting;
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"自定义地址" message:@"" preferredStyle:UIAlertControllerStyleAlert];
         [alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
             textField.text = self.testAddress;
+            if (self.envType == EnvironmentTypeUAT) textField.text = self.uatAddress;
             textField.textAlignment = NSTextAlignmentCenter;
             textField.accessibilityIdentifier = @"testAddrField";
             textField.borderStyle = UITextBorderStyleRoundedRect;
@@ -142,7 +143,10 @@ static YFSettingVC *setting;
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             UITextField *field = alert.textFields.firstObject;
             
-            [[NSUserDefaults standardUserDefaults] setValue:field.text forKey:@"com.lianlianpay.address.test"];
+            NSString *key = @"com.lianlianpay.address.test";
+            if (self.envType == EnvironmentTypeUAT) key = @"com.lianlianpay.address.uat";
+            
+            [[NSUserDefaults standardUserDefaults] setValue:field.text forKey:key];
             [[NSUserDefaults standardUserDefaults] synchronize];
             [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:1]] withRowAnimation:UITableViewRowAnimationAutomatic];
         }];
@@ -229,6 +233,16 @@ static YFSettingVC *setting;
 
 + (EnvironmentType)environment {
     return [[NSUserDefaults standardUserDefaults] integerForKey:@"com.lianlianpay.environment"];
+}
+
+- (NSString *)uatAddress {
+    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.lianlianpay.address.uat"];
+    if (savedAddr.length > 0) {
+        return savedAddr;
+    }
+    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:@"com.lianlianpay.address.uat"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    return _testAddress;
 }
 
 - (NSString *)testAddress {
