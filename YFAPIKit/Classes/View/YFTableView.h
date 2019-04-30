@@ -2,8 +2,8 @@
 //  YFTableView.h
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/8/15.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/8/15.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -24,6 +24,8 @@ typedef void(^DTBlock)(void);
 @property (nonatomic, strong) NSMutableDictionary *dic;
 
 @property (nonatomic, strong) NSDictionary *fieldsData;
+
+@property (nonatomic, strong) UIButton *nextBtn;
 
 - (NSDictionary *)fieldsDataFromArray: (NSArray *)array;
 - (NSDictionary *)fieldsDataForSection: (NSUInteger)section;

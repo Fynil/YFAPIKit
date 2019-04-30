@@ -2,8 +2,8 @@
 //  YFAPIBaseVC.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/9/21.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/9/21.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import "YFAPIBaseVC.h"

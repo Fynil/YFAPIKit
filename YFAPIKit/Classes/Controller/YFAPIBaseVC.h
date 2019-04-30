@@ -2,8 +2,8 @@
 //  YFAPIBaseVC.h
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/9/21.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/9/21.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -62,5 +62,7 @@ typedef void (^ExitParam)(NSDictionary* exitParam);
 - (void)refreshTimeRelatedTexts;
 
 - (void)requestTokenWithDic:(NSDictionary*)paramDic path:(NSString*)path complete:(void (^)(NSDictionary* responseDic))complete;
+
+- (void)requestConfiguration: (NSMutableURLRequest *)request;
 
 @end

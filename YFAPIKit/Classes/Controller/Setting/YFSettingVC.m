@@ -2,8 +2,8 @@
 //  YFSettingVC.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2018/3/15.
-//  Copyright © 2018年 Fynil. All rights reserved.
+//  Created by EvenLin on 2018/3/15.
+//  Copyright © 2018年 EvenLin. All rights reserved.
 //
 
 #import "YFSettingVC.h"
@@ -73,7 +73,7 @@ static YFSettingVC *setting;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         switch (self.envType) {
             case EnvironmentTypeDefault:
-                cell.detailTextLabel.text = @"正式环境不支持自定义";
+                cell.detailTextLabel.text = self.defaultAddress?:@"正式环境不支持自定义";
                 cell.accessoryType = UITableViewCellAccessoryNone;
                 break;
             case EnvironmentTypeTest:
@@ -97,17 +97,14 @@ static YFSettingVC *setting;
         cell.accessoryView = accessorySwitch;
     }
     
-    //SDK
     if (indexPath.section == (2 + [self add])) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"检查更新";
-            cell.detailTextLabel.text = [@"Demo版本:" stringByAppendingString:[[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"]];
+            cell.detailTextLabel.text = [[NSBundle mainBundle] infoDictionary][@"CFBundleVersion"];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = @"关于SDK";
-//            cell.detailTextLabel.numberOfLines = 2;
-//            cell.detailTextLabel.font = [UIFont systemFontOfSize:12];
+            cell.textLabel.text = @"关于";
             cell.detailTextLabel.text = self.sdkVersion?:@"";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
@@ -159,7 +156,7 @@ static YFSettingVC *setting;
         if (indexPath.row == 0) {
             [[NSNotificationCenter defaultCenter] postNotificationName:@"com.lianlianpay.checkUpdate" object:nil];
         }
-        //关于SDK
+        //关于
         if (indexPath.row == 1) {
             if (self.sdkAbout.length > 0) {
                 YFTextViewController *aboutVC = [[YFTextViewController alloc] init];

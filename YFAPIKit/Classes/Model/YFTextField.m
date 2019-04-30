@@ -2,8 +2,8 @@
 //  YFTextField.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/8/15.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/8/15.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import "YFTextField.h"
@@ -24,8 +24,9 @@
             }
             if ([field isKindOfClass:[NSDictionary class]]) {
                 if ([field[@"key"] isEqualToString: key]) {
-                    //是否要将用到的 key 们保存成 plist 文件到 document
-//                    [self saveFieldToPlist:field];
+                    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"yfapikit.saveplist"]) {
+                        [self saveFieldToPlist:field];
+                    }
                     avalableInPlist = YES;
                     [self setValuesForKeysWithDictionary:field];
                 }

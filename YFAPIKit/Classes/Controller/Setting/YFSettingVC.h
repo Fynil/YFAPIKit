@@ -2,8 +2,8 @@
 //  YFSettingVC.h
 //  YFAPIKit
 //
-//  Created by Fynil on 2018/3/15.
-//  Copyright © 2018年 Fynil. All rights reserved.
+//  Created by EvenLin on 2018/3/15.
+//  Copyright © 2018年 EvenLin. All rights reserved.
 //  测试环境地址缓存KEY：com.lianlianpay.address.test
 //  UAT环境地址缓存KEY: com.lianlianpay.address.uat
 //  环境切换缓存KEY: com.lianlianpay.environment
@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, EnvironmentType) {
 + (instancetype)defaultSetting;
 + (BOOL)isDebug;
 @property (nonatomic, strong) NSString *sdkAbout;
+@property (nonatomic, strong) NSString *defaultAddress;
 @property (nonatomic, strong) NSString *testAddress;
 @property (nonatomic, strong) NSString *uatAddress;
 @property (nonatomic, strong) NSString *sdkVersion;

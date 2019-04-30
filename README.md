@@ -10,7 +10,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-如果你想使用YFAPIKit， 需要先有一个导航栏（呵呵哒）
+NavigationController is required ！
 
 ## Installation
 
@@ -72,7 +72,7 @@ pod 'YFAPIKit'
 
 ## Author
 
-Fynil, fynil@qq.com
+EvenLin, evenlinyf@qq.com
 
 ## License
 

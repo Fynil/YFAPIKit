@@ -2,8 +2,8 @@
 //  YFTableView.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/8/15.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/8/15.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import "YFTableView.h"
@@ -12,7 +12,6 @@
 
 @interface YFTableView () <UITableViewDelegate, UITableViewDataSource,UITextFieldDelegate>
 
-@property (nonatomic, strong) UIButton *payBtn;
 @property (nonatomic, strong) id target;
 
 @end
@@ -173,8 +172,8 @@
 - (UIView *)footerView {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.frame.size.width, 100)];
     view.backgroundColor = kYFBGColor;
-    [view addSubview:self.payBtn];
-    [self.payBtn setTitle:self.uiModel.footerTitle forState:UIControlStateNormal];
+    [view addSubview:self.nextBtn];
+    [self.nextBtn setTitle:self.uiModel.footerTitle forState:UIControlStateNormal];
     return view;
 }
 
@@ -200,7 +199,7 @@
 
 - (void)addTarget:(id)target action:(SEL)action {
     self.target = target;
-    [self.payBtn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
+    [self.nextBtn addTarget:target action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
 - (void)refreshTV {
@@ -288,21 +287,21 @@
     return [dic copy];
 }
 
-- (UIButton *)payBtn {
-    if (!_payBtn ) {
-        _payBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_payBtn setTitle:self.uiModel.footerTitle forState:UIControlStateNormal];
-        [_payBtn setBackgroundColor:YFColor];
+- (UIButton *)nextBtn {
+    if (!_nextBtn ) {
+        _nextBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_nextBtn setTitle:self.uiModel.footerTitle forState:UIControlStateNormal];
+        [_nextBtn setBackgroundColor:YFColor];
         if ([YFColor isEqual:[UIColor whiteColor]]) {
-            [_payBtn setBackgroundColor:kYFNavTextColor];
+            [_nextBtn setBackgroundColor:kYFNavTextColor];
         }
-        [_payBtn setTitleColor:YFHexColor(0xFFFFFF) forState:UIControlStateNormal];
-        [_payBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
-        _payBtn.frame = CGRectMake(15, 30, self.frame.size.width-30, 44);
-        _payBtn.layer.cornerRadius = 5;
-        _payBtn.layer.masksToBounds = YES;
+        [_nextBtn setTitleColor:YFHexColor(0xFFFFFF) forState:UIControlStateNormal];
+        [_nextBtn setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+        _nextBtn.frame = CGRectMake(15, 30, self.frame.size.width-30, 44);
+        _nextBtn.layer.cornerRadius = 5;
+        _nextBtn.layer.masksToBounds = YES;
     }
-    return _payBtn;
+    return _nextBtn;
 }
 
 - (UIButton *)btnWithName: (NSString *)name selector: (SEL)selector {

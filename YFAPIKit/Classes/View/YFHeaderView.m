@@ -2,8 +2,8 @@
 //  YFHeaderView.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/8/15.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/8/15.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #import "YFHeaderView.h"

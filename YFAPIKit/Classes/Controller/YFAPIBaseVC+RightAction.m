@@ -2,8 +2,8 @@
 //  YFAPIBaseVC+RightAction.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2018/2/5.
-//  Copyright © 2018年 Fynil. All rights reserved.
+//  Created by EvenLin on 2018/2/5.
+//  Copyright © 2018年 EvenLin. All rights reserved.
 //
 
 #import "YFAPIBaseVC+RightAction.h"
@@ -28,7 +28,9 @@
 
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
-
+    
+    [self requestConfiguration:request];
+    
     NSURLSession *session = [NSURLSession sharedSession];
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.showHud) {
@@ -48,6 +50,20 @@
                                [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
                            }
                        });
+                       if ([response isKindOfClass:[NSHTTPURLResponse class]]) {
+                           NSHTTPURLResponse *httpResp = (NSHTTPURLResponse *)response;
+                           if (httpResp.statusCode != 200) {
+                               DemoLog(@"%@", response.description);
+                               dispatch_async(dispatch_get_main_queue(), ^{
+                                   NSString *errorString =
+                                   [NSString stringWithFormat:@"%ld %@,%@", (long)httpResp.statusCode,
+                                    [NSHTTPURLResponse localizedStringForStatusCode:httpResp.statusCode],
+                                    httpResp.URL.absoluteString];
+                                   complete(@{ @"ret_code" : @"LE9001", @"ret_msg" : errorString });
+                               });
+                               return;
+                           }
+                       }
                        if (error || !data) {
                            DemoLog(@"请求出错：%@", error.description);
                            dispatch_async(dispatch_get_main_queue(), ^{
@@ -64,6 +80,9 @@
                        });
                    }];
     [task resume];
+}
+
+- (void)requestConfiguration:(NSMutableURLRequest *)request {
 }
 
 - (void)refreshOrder {

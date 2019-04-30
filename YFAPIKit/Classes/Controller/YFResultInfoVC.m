@@ -2,8 +2,8 @@
 //  YFResultInfoVC.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2016/12/19.
-//  Copyright © 2016年 Fynil. All rights reserved.
+//  Created by EvenLin on 2016/12/19.
+//  Copyright © 2016年 EvenLin. All rights reserved.
 //
 
 #import "YFResultInfoVC.h"

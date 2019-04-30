@@ -2,7 +2,7 @@
 //  YFAPIKit.h
 //  Pods
 //
-//  Created by Fynil on 2018/7/12.
+//  Created by EvenLin on 2018/7/12.
 //
 
 #ifndef YFAPIKit_h

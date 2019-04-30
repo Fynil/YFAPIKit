@@ -2,8 +2,8 @@
 //  YFIDCardGenerator.m
 //  YFAPIKit
 //
-//  Created by Fynil on 2018/1/27.
-//  Copyright © 2018年 Fynil. All rights reserved.
+//  Created by EvenLin on 2018/1/27.
+//  Copyright © 2018年 EvenLin. All rights reserved.
 //
 
 #import "YFIDCardGenerator.h"

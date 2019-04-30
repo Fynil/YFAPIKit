@@ -2,8 +2,8 @@
 //  YFConsts.h
 //  YFAPIKit
 //
-//  Created by Fynil on 2017/7/21.
-//  Copyright © 2017年 Fynil. All rights reserved.
+//  Created by EvenLin on 2017/7/21.
+//  Copyright © 2017年 EvenLin. All rights reserved.
 //
 
 #ifndef YFConsts_h

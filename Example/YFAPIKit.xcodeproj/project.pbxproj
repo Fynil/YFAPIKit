@@ -251,7 +251,8 @@
 				ORGANIZATIONNAME = Fynil;
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
-						ProvisioningStyle = Manual;
+						DevelopmentTeam = VM7X2GJGGF;
+						ProvisioningStyle = Automatic;
 					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
@@ -263,6 +264,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -325,7 +327,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-YFAPIKit_Example/Pods-YFAPIKit_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-YFAPIKit_Example/Pods-YFAPIKit_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/YFAPIKit/YFAPIKit.framework",
 			);
@@ -336,7 +338,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-YFAPIKit_Example/Pods-YFAPIKit_Example-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-YFAPIKit_Example/Pods-YFAPIKit_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		BCA7419AF18F14DEA64CB74A /* [CP] Check Pods Manifest.lock */ = {
@@ -494,8 +496,9 @@
 			baseConfigurationReference = DA8B8F50362433C04D5EDAE7 /* Pods-YFAPIKit_Example.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VM7X2GJGGF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YFAPIKit/YFAPIKit-Prefix.pch";
 				INFOPLIST_FILE = "YFAPIKit/YFAPIKit-Info.plist";
@@ -512,8 +515,9 @@
 			baseConfigurationReference = E08568DABF51E83365DF5022 /* Pods-YFAPIKit_Example.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VM7X2GJGGF;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "YFAPIKit/YFAPIKit-Prefix.pch";
 				INFOPLIST_FILE = "YFAPIKit/YFAPIKit-Info.plist";
