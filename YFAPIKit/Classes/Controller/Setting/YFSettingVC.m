@@ -105,7 +105,7 @@ static YFSettingVC *setting;
         }
         if (indexPath.row == 1) {
             cell.textLabel.text = @"关于";
-            cell.detailTextLabel.text = self.sdkVersion?:@"";
+            cell.detailTextLabel.text = self.sdkVersion?:[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }
     }
