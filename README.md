@@ -72,7 +72,7 @@ pod 'YFAPIKit'
 
 ## Author
 
-EvenLin, evenlinyf@qq.com
+EvenLin, evenlinyf@163.com
 
 ## License
 

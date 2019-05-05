@@ -9,7 +9,7 @@ Pod::Spec.new do |s|
     
     s.homepage         = 'https://github.com/evenlinyf/YFAPIKit'
     s.license          = { :type => 'MIT', :file => 'LICENSE' }
-    s.author           = { 'EvenLin' => 'evenlinyf@qq.com' }
+    s.author           = { 'EvenLin' => 'evenlinyf@163.com' }
     s.source           = { :git => 'https://github.com/evenlinyf/YFAPIKit.git', :tag => s.version.to_s }
     s.platform         = :ios
     s.ios.deployment_target = '7.0'
