@@ -140,8 +140,8 @@ static YFSettingVC *setting;
         UIAlertAction *action = [UIAlertAction actionWithTitle:@"好" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             UITextField *field = alert.textFields.firstObject;
             
-            NSString *key = @"com.lianlianpay.address.test";
-            if (self.envType == EnvironmentTypeUAT) key = @"com.lianlianpay.address.uat";
+            NSString *key = @"com.evenlinyf.address.test";
+            if (self.envType == EnvironmentTypeUAT) key = @"com.evenlinyf.address.uat";
             
             [[NSUserDefaults standardUserDefaults] setValue:field.text forKey:key];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -154,7 +154,7 @@ static YFSettingVC *setting;
     if (indexPath.section == (2 + [self add])) {
         //检查更新
         if (indexPath.row == 0) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"com.lianlianpay.checkUpdate" object:nil];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"com.evenlinyf.checkUpdate" object:nil];
         }
         //关于
         if (indexPath.row == 1) {
@@ -229,25 +229,25 @@ static YFSettingVC *setting;
 }
 
 + (EnvironmentType)environment {
-    return [[NSUserDefaults standardUserDefaults] integerForKey:@"com.lianlianpay.environment"];
+    return [[NSUserDefaults standardUserDefaults] integerForKey:@"com.evenlinyf.environment"];
 }
 
 - (NSString *)uatAddress {
-    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.lianlianpay.address.uat"];
+    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.evenlinyf.address.uat"];
     if (savedAddr.length > 0) {
         return savedAddr;
     }
-    [[NSUserDefaults standardUserDefaults] setValue:_uatAddress forKey:@"com.lianlianpay.address.uat"];
+    [[NSUserDefaults standardUserDefaults] setValue:_uatAddress forKey:@"com.evenlinyf.address.uat"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     return _uatAddress;
 }
 
 - (NSString *)testAddress {
-    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.lianlianpay.address.test"];
+    NSString *savedAddr = [[NSUserDefaults standardUserDefaults] valueForKey:@"com.evenlinyf.address.test"];
     if (savedAddr.length > 0) {
         return savedAddr;
     }
-    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:@"com.lianlianpay.address.test"];
+    [[NSUserDefaults standardUserDefaults] setValue:_testAddress forKey:@"com.evenlinyf.address.test"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     return _testAddress;
 }
@@ -261,7 +261,7 @@ static YFSettingVC *setting;
 
 - (void)setEnvType:(EnvironmentType)envType {
     _envType = envType;
-    [[NSUserDefaults standardUserDefaults] setInteger:envType forKey:@"com.lianlianpay.environment"];
+    [[NSUserDefaults standardUserDefaults] setInteger:envType forKey:@"com.evenlinyf.environment"];
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 

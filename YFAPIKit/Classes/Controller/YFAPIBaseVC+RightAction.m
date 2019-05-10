@@ -125,7 +125,7 @@
 - (void)configRiskItem {
     YFDicJsonStringVC *vc = [[YFDicJsonStringVC alloc] init];
     vc.interface =
-        [[YFInterface alloc] initWithName:@"com.lianlianpay.riskitem"
+        [[YFInterface alloc] initWithName:@"com.evenlinyf.riskitem"
                                 headTitle:@"风控参数配置"
                                headDetail:nil
                             necessaryKeys:@[]

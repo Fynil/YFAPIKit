@@ -4,9 +4,9 @@
 //
 //  Created by EvenLin on 2018/3/15.
 //  Copyright © 2018年 EvenLin. All rights reserved.
-//  测试环境地址缓存KEY：com.lianlianpay.address.test
-//  UAT环境地址缓存KEY: com.lianlianpay.address.uat
-//  环境切换缓存KEY: com.lianlianpay.environment
+//  测试环境地址缓存KEY：com.evenlinyf.address.test
+//  UAT环境地址缓存KEY: com.evenlinyf.address.uat
+//  环境切换缓存KEY: com.evenlinyf.environment
 
 #import "YFAPIBaseVC.h"
 

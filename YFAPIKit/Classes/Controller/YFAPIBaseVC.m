@@ -26,7 +26,7 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(checkUpdate)
-                                                 name:@"com.lianlianpay.checkUpdate"
+                                                 name:@"com.evenlinyf.checkUpdate"
                                                object:nil];
     self.showHud = YES;
     [self hudConfig];
