@@ -4,13 +4,7 @@
 [![License](https://img.shields.io/cocoapods/l/YFAPIKit.svg?style=flat)](https://cocoapods.org/pods/YFAPIKit)
 [![Platform](https://img.shields.io/cocoapods/p/YFAPIKit.svg?style=flat)](https://cocoapods.org/pods/YFAPIKit)
 
-## Example
-
-To run the example project, clone the repo, and run `pod install` from the Example directory first.
-
-## Requirements
-
-NavigationController is required ！
+This version is deprecated , if you need a newer version, check  [LLDemoKit](https://github.com/LLPayiOSDev/LLDemoKit)
 
 ## Installation
 
